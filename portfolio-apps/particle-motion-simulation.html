@@ -1,0 +1,360 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Furyan's Homepage</title>
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" href="../css/style.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/menu.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/content.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/links.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/code-highlight.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/back-to-top.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/portfolio-apps/particle-motion-simulation.css" type="text/css" media="all" />
+        <script src="../js/jquery-1.7.2.min.js"></script>
+        <script src="../js/back-to-top.js"></script>
+    </head>
+    <body>
+        <div id="menuBg"></div>
+        <div id="container">
+            <header id="top"></header>
+            <nav id="menu">
+                <ul>
+                    <li><a href="../index.html">HOME</a></li>
+                    <li><a href="../portfolio.html">PORTFOLIO</a></li>
+                    <li><a href="../about-me.html">ABOUT ME</a></li>
+                    <li><a href="../contact.html">CONTACT</a></li>
+                </ul>
+            </nav>
+            <div id="contUtil">
+                <div id="content">
+                    <article class="blue">
+                        <h2>Particle Motion Simulation</h2>
+                        <p>
+                            Download: <a href="packages/ParticleMotionSimulation.zip">ParticleMotionSimulation.zip</a> (for Windows only)<br />
+                            Source code: <a class="address" href="">https://github.com/DisturbedFuryan/ParticleMotionSimulation</a>
+                        </p>
+                        <hr />
+                        <ul>
+                            <li><a href="#introduction">Introduction</a></li>
+                            <li><a href="#basic-algorithm">Basic algorithm</a></li>
+                            <li><a href="#used-optimizations">Used optimizations</a></li>
+                            <li><a href="#method-for-keeping-time">Method for keeping time</a></li>
+                            <li><a href="#keeped-times-for-cpu">Keeped times for CPU</a></li>
+                            <li><a href="#keeped-times-for-gpu">Keeped times for GPU</a></li>
+                            <li><a href="#comparison-and-discussion-about-results">Comparison and discussion about results</a></li>
+                        </ul>
+                        <hr />
+                        <a name="introduction"></a>
+                        <p>During creating the program I wanted to get an answer for the question: does implementing CUDA in a finished application have a point? To got this I wrote an application without keeping CUDA in my mind first.</p>
+                        <p>Objects representing the particles, with next objects inside – vectors of position and velocity, I putted in <span class="textCode">vector</span> (the container from the standard library of C++). For the case using only CPU that kind of solution is quite programmer-friendly and efficient enough. OK, we've got nicely working application. Maybe it will be even better if we'll implement the CUDA platform inside. So... What now?</p>
+                        <a name="basic-algorithm"></a>
+                        <h3>BASIC ALGORITHM</h3>
+                        <p>We can't simply transfer the container with the particles to <i>the kernel</i>. First, we should put them inside an traditional array and next we will be able to send that package to <i>the kernel</i>... Rubbish, we shouldn't shows an array with pointers to objects for <i>the kernel</i>.</p>
+                        <p>For that reason I reached into the particles for values of position and velocity. I created two arrays consisting of <span class="textCode">float</span> type variables to put those values inside. These arrays I could give for the GPU (after allocation appropriate space on it of course). Graphic card added both arrays really quickly and returned the result. Next step will be couple the result and objects together and... start the whole operation again (OK, re-allocation of memory is not necessary), and again, and again...</p>
+                        <p>Pseudo-code of GPU particles updating method</p>
+                        <div class="code">
+                            UpdateGPU()<br />
+                            {<br />
+                            <span class="comment">
+                            &nbsp&nbsp&nbsp&nbsp// Arrays, which holds data from the particles, are components of the class,<br />
+                            &nbsp&nbsp&nbsp&nbsp// both those on host and those on graphic card. Allocation of their memory<br />
+                            &nbsp&nbsp&nbsp&nbsp// was executed by the class constructor. Re-allocation is unnecessary.<br />
+                            </span>
+                            &nbsp&nbsp&nbsp&nbspSave vectors data of the particles to arrays located on the host.<br /><br />
+                            &nbsp&nbsp&nbsp&nbspCopy the arrays with vectors data from the host to the graphic card.<br /><br />
+                            &nbsp&nbsp&nbsp&nbspDetermine parameters needed to run the kernel and... just run it.<br /><br />
+                            &nbsp&nbsp&nbsp&nbspGet the resulted array from the graphic card.<br /><br />
+                            &nbsp&nbsp&nbsp&nbspDetermine new positions for the particles using the taken result.<br />
+                            }
+                        </div>
+                        <p>Pseudo-code of <i>kernel</i> (without any optimization)</p>
+                        <div class="code">
+                            __global__ void UpdateParticlesCUDA()<br />
+                            {<br />
+                            &nbsp&nbsp&nbsp&nbspuThreadX = threadIdx.x;<br /><br />
+                            <span class="comment">
+                            &nbsp&nbsp&nbsp&nbsp// elapsedTime – elapsed time since last update of the particles<br />
+                            </span>
+                            &nbsp&nbsp&nbsp&nbspfNewPosX = (pafPos[uThreadX] + (pavVel[uThreadX] * elapsedTime));<br />
+                            &nbsp&nbsp&nbsp&nbspfNewPosY = (pafPos[uThreadX + numberOfParticles]<br />
+                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp+ (pavVel[uThreadX + numberOfParticles] * elapsedTime));<br /><br />
+                            &nbsp&nbsp&nbsp&nbspCorrect the position, if the particle leaved screen bounds.<br /><br />
+                            &nbsp&nbsp&nbsp&nbspSave the new position in array keeping the result.<br />
+                            }
+                        </div>
+                        <p>NOTE: One thread computes a new position for only one particle.</p>
+                        <a name="used-optimizations"></a>
+                        <h3>USED OPTIMIZATIONS</h3>
+                        <p>First optimization was showed. Memory allocation takes place only once, by the class constructor. Point is, that a number of the particles is constant all of the time. This kind of optimization could not be exist with non-constant number of object.</p>
+                        <p>Second optimization is the possibility to creating more than one block of threads, which means – possibility to handling much more particles. Below are the technically details.</p>
+                        <p>Determining parameters needed to run <i>the kernel</i> after optimization</p>
+                        <div class="code">
+                            dim3 d3Grid;<br />
+                            d3Grid.x = (((uNumParticles % iTileWidth) > 0)<br />
+                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp? ((uNumParticles / iTileWidth) + 1) : (uNumParticles / iTileWidth));<br />
+                            dim3 d3Threads;<br />
+                            d3Threads.x = iTileWidth;
+                        </div>
+                        <p>We creating the blocks with <span class="textCode">iTileWidth</span> lengths, which means each block will be hold <span class="textCode">iTileWidth</span> threads. In case, when a number of the particles is greater than multiple of <span class="textCode">iTileWidth</span>, we creating one additional block. Excess threads just doing nothing.</p>
+                        <p>Pseudo-code of the optimized version of <i>the kernel</i></p>
+                        <div class="code">
+                            __global__ void OptimizedUpdateParticlesCUDA()<br />
+                            {<br />
+                            &nbsp&nbsp&nbsp&nbspunsigned int uBlockX = blockIdx.x;<br />
+                            &nbsp&nbsp&nbsp&nbspunsigned int uThreadX = threadIdx.x;<br /><br />
+                            &nbsp&nbsp&nbsp&nbspunsigned int uX = ((uBlockX * iTileWidth) + uThreadX);<br /><br />
+                            &nbsp&nbsp&nbsp&nbspif (uX < numberOfParticles)&nbsp&nbsp<span class="comment">// Determining usefulness of the thread...</span><br />
+                            &nbsp&nbsp&nbsp&nbsp{<br />
+                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspfNewPosX = (pafPos[uX] + (pavVel[uX] * elapsedTime));<br />
+                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspfNewPosY = (pafPos[uX + numberOfParticles]<br />
+                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp+ (pavVel[uX + numberOfParticles] * elapsedTime));<br /><br />
+                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspCorrect the position, if the particle leaved screen bounds.<br /><br />
+                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSave the new position in array keeping the result.<br />
+                            &nbsp&nbsp&nbsp&nbsp}<br />
+                            }
+                        </div>
+                        <a name="method-for-keeping-time"></a>
+                        <h3>METHOD FOR KEEPING TIME</h3>
+                        <p>To make writing of the simulation handy, I created two classes of timers inherits from the class <span class="textCode">ITimer</span>. The reason is that the ways to keeping time on GPU and CPU are different. So we have classes for both of them: <span class="textCode">CTimerGPU</span> and <span class="textCode">CTimerCPU</span>. To get an elapsed time we only have to create object of one of the mentioned classes and call a method <span class="textCode">Start()</span>. Next call a method <span class="textCode">GetElapsedTimeInMilliseconds()</span> to... how the name of the method says... get an elapsed time in milliseconds. Isn't it simply?</p>
+                        <p>I used the timers to keep:</p>
+                        <ul>
+                            <li>time of particles positions update,</li>
+                            <li>time of scene drawing,</li>
+                            <li>time of program execution.</li>
+                        </ul>
+                        <p>Every application start generates <span class="textCode">.txt</span> file with a summary. Name of that file can be changed in <span class="textCode">config.txt</span> file, the same as other program parameters like number of the particles or GPU using (<b>application don't use GPU by default</b>).</p>
+                        <p>Description of some data contained in a summary:</p>
+                        <ul>
+                            <li>generated by program using GPU (with automatic note <span class="textCode">_gpu</span> at an end):</li>
+                            <ul>
+                                <li><span class="textCode">Elapsed time on GPU in first update (only running time of kernel)</span> – kept time during first call of the particles update method. The measurement is related only to <i>kernel</i>, which doing exactly the same thing as the method using only CPU.</li>
+                                <li><span class="textCode">Average time spent on single update on GPU (only running time of kernel)</span> – the mean of measurements, first of them was explained above.</li>
+                                <li><span class="textCode">Elapsed time on CPU in first update</span> – kept time during first call of the particles update method. In addition, the measurement includes receiving and sending data to the particles.</li>
+                                <li><span class="textCode">Average time spent on single update on CPU</span> – the mean of measurements, first of them was explained above.</li>
+                            </ul>
+                            <li>generated by program using only CPU (with automatic note <span class="textCode">_cpu</span> at an end):</li>
+                            <ul>
+                                <li><span class="textCode">Elapsed time on CPU in first update</span> – kept time during first call of the particles update method. The measurement is related to the whole method – from the beginning to the end.</li>
+                                <li><span class="textCode">Average time spent on single update on CPU</span> – the mean of measurements, first of them was explained above.</li>
+                            </ul>
+                            <li>generated by program using any configuration:</li>
+                            <ul>
+                                <li><span class="textCode">Average time spent on single draw</span> – the mean of measurements related to the scene drawing.</li>
+                                <li><span class="textCode">Duration of the program</span> – time of program execution, from the beginning to the end.</li>
+                            </ul>
+                        </ul>
+                        </br>
+                        <p>Test platform:</p>
+                        <table id="testPlatform">
+                            <tr>
+                                <td class="device">Processor:</td><td>AMD Phenom II X4 965 3.40 GHz</td>
+                            </tr>
+                            <tr>
+                                <td class="device">Installed memory (RAM):</td><td>8.00 GB</td>
+                            </tr>
+                            <tr>
+                                <td class="device">Graphic Card:</td><td>NVIDIA GeForce GTX 550 Ti 1024 MB</td>
+                            </tr>
+                        </table>
+                        <a name="keeped-times-for-cpu"></a>
+                        <h3>KEEPED TIMES FOR CPU</h3>
+                        <p>Summaries for 10, 100, 1,000, 10,000, 100,000 and 500,000 particles:</p>
+                        <div class="summary cpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing CPU only<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 10</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            Elapsed time on CPU in first update: 0 ms<br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTime">0.000368991 ms</span>&nbsp&nbsp<span class="gpuTime">// GPU: 0.0526647 ms</span><br /><br />
+                            Average time spent on single draw: 4.39113 ms<br /><br />
+                            Duration of the program: 60.0035 s
+                        </div>
+                        <div class="summary cpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing CPU only<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 100</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            Elapsed time on CPU in first update: 0.00149902 ms<br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTime">0.0019577 ms</span>&nbsp&nbsp<span class="gpuTime">// GPU: 0.0582376 ms</span><br /><br />
+                            Average time spent on single draw: 4.43048 ms<br /><br />
+                            Duration of the program: 60.0033 s
+                        </div>
+                        <div class="summary cpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing CPU only<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 1,000</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            Elapsed time on CPU in first update: 0.0140908 ms<br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTime">0.0175463 ms</span>&nbsp&nbsp<span class="gpuTime">// GPU: 0.0610483 ms</span><br /><br />
+                            Average time spent on single draw: 4.78584 ms<br /><br />
+                            Duration of the program: 60.0008 s
+                        </div>
+                        <div class="summary cpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing CPU only<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 10,000</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            Elapsed time on CPU in first update: 0.236245 ms<br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTime">0.193308 ms</span>&nbsp&nbsp<span class="gpuTime">// GPU: 0.0547099 ms</span><br /><br />
+                            Average time spent on single draw: 8.67571 ms<br /><br />
+                            Duration of the program: 60.0071 s
+                        </div>
+                        <div class="summary cpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing CPU only<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 100,000</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            Elapsed time on CPU in first update: 3.46363 ms<br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTime">2.4033 ms</span>&nbsp&nbsp<span class="gpuTime">// GPU: 0.0901305 ms</span><br /><br />
+                            Average time spent on single draw: 49.0021 ms<br /><br />
+                            Duration of the program: 60.019 s
+                        </div>
+                        <div class="summary cpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing CPU only<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 500,000</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            Elapsed time on CPU in first update: 12.8894 ms<br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTime">12.5404 ms</span>&nbsp&nbsp<span class="gpuTime">// GPU: 0.313739 ms</span><br /><br />
+                            Average time spent on single draw: 225.307 ms<br /><br />
+                            Duration of the program: 60.1785 s
+                        </div>
+                        <a name="keeped-times-for-gpu"></a>
+                        <h3>KEEPED TIMES FOR GPU</h3>
+                        <p>Summaries for 10, 100, 1,000, 10,000, 100,000 and 500,000 particles:</p>
+                        <div class="summary gpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing GPU<br />
+                            &nbsp&nbspTile width: 256<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 10</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            CUDA malloc Pos: no error<br />
+                            CUDA malloc Vel: no error<br />
+                            CUDA malloc Out: no error<br /><br />
+                            Run kernel for the first time: no error<br />
+                            Get Out from device for the first time: no error<br /><br />
+                            Elapsed time on GPU in first update (only running time of kernel): 0.04576 ms<br />
+                            Elapsed time on CPU in first update: 0.212261 ms<br /><br />
+                            Average time spent on single update on GPU<br />
+                            (only running time of kernel): <span class="gpuTime">0.0526647 ms</span>&nbsp&nbsp<span class="cpuTime">// CPU: 0.00036899 ms</span><br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTimeGPUsummary">0.340199 ms</span><br /><br />
+                            Average time spent on single draw: 4.41189 ms<br /><br />
+                            Duration of the program: 60.0012 s
+                        </div>
+                        <div class="summary gpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing GPU<br />
+                            &nbsp&nbspTile width: 256<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 100</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            CUDA malloc Pos: no error<br />
+                            CUDA malloc Vel: no error<br />
+                            CUDA malloc Out: no error<br /><br />
+                            Run kernel for the first time: no error<br />
+                            Get Out from device for the first time: no error<br /><br />
+                            Elapsed time on GPU in first update (only running time of kernel): 0.063872 ms<br />
+                            Elapsed time on CPU in first update: 0.353768 ms<br /><br />
+                            Average time spent on single update on GPU<br />
+                            (only running time of kernel): <span class="gpuTime">0.0582376 ms</span>&nbsp&nbsp<span class="cpuTime">// CPU: 0.0019577 ms</span><br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTimeGPUsummary">0.360151 ms</span><br /><br />
+                            Average time spent on single draw: 4.44421 ms<br /><br />
+                            Duration of the program: 60.0018 s
+                        </div>
+                        <div class="summary gpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing GPU<br />
+                            &nbsp&nbspTile width: 256<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 1,000</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            CUDA malloc Pos: no error<br />
+                            CUDA malloc Vel: no error<br />
+                            CUDA malloc Out: no error<br /><br />
+                            Run kernel for the first time: no error<br />
+                            Get Out from device for the first time: no error<br /><br />
+                            Elapsed time on GPU in first update (only running time of kernel): 0.04768 ms<br />
+                            Elapsed time on CPU in first update: 0.248837 ms<br /><br />
+                            Average time spent on single update on GPU<br />
+                            (only running time of kernel): <span class="gpuTime">0.0610483 ms</span>&nbsp&nbsp<span class="cpuTime">// CPU: 0.0175463 ms</span><br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTimeGPUsummary">0.391057 ms</span><br /><br />
+                            Average time spent on single draw: 4.80291 ms<br /><br />
+                            Duration of the program: 60.0034 s
+                        </div>
+                        <div class="summary gpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing GPU<br />
+                            &nbsp&nbspTile width: 256<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 10,000</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            CUDA malloc Pos: no error<br />
+                            CUDA malloc Vel: no error<br />
+                            CUDA malloc Out: no error<br /><br />
+                            Run kernel for the first time: no error<br />
+                            Get Out from device for the first time: no error<br /><br />
+                            Elapsed time on GPU in first update (only running time of kernel): 0.047936 ms<br />
+                            Elapsed time on CPU in first update: 0.719528 ms<br /><br />
+                            Average time spent on single update on GPU<br />
+                            (only running time of kernel): <span class="gpuTime">0.0547099 ms</span>&nbsp&nbsp<span class="cpuTime">// CPU: 0.193308 ms</span><br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTimeGPUsummary">0.632787 ms</span><br /><br />
+                            Average time spent on single draw: 8.76368 ms<br /><br />
+                            Duration of the program: 60.0021 s
+                        </div>
+                        <div class="summary gpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing GPU<br />
+                            &nbsp&nbspTile width: 256<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 100,000</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            CUDA malloc Pos: no error<br />
+                            CUDA malloc Vel: no error<br />
+                            CUDA malloc Out: no error<br /><br />
+                            Run kernel for the first time: no error<br />
+                            Get Out from device for the first time: no error<br /><br />
+                            Elapsed time on GPU in first update (only running time of kernel): 0.076192 ms<br />
+                            Elapsed time on CPU in first update: 4.51654 ms<br /><br />
+                            Average time spent on single update on GPU<br />
+                            (only running time of kernel): <span class="gpuTime">0.0901305 ms</span>&nbsp&nbsp<span class="cpuTime">// CPU: 2.4033 ms</span><br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTimeGPUsummary">3.95838 ms</span><br /><br />
+                            Average time spent on single draw: 49.3176 ms<br /><br />
+                            Duration of the program: 60.0068 s
+                        </div>
+                        <div class="summary gpuSummary">
+                            Runtime parameters:<br />
+                            &nbsp&nbspUsing GPU<br />
+                            &nbsp&nbspTile width: 256<br />
+                            &nbsp&nbsp<span class="particlesNum">Number of particles: 500,000</span><br />
+                            &nbsp&nbspMax velocity of particle: 100<br /><br />
+                            CUDA malloc Pos: no error<br />
+                            CUDA malloc Vel: no error<br />
+                            CUDA malloc Out: no error<br /><br />
+                            Run kernel for the first time: no error<br />
+                            Get Out from device for the first time: no error<br /><br />
+                            Elapsed time on GPU in first update (only running time of kernel): 0.217408 ms<br />
+                            Elapsed time on CPU in first update: 22.711 ms<br /><br />
+                            Average time spent on single update on GPU<br />
+                            (only running time of kernel): <span class="gpuTime">0.313739 ms</span>&nbsp&nbsp<span class="cpuTime">// CPU: 12.5404 ms</span><br /><br />
+                            Average time spent on single update on CPU: <span class="cpuTimeGPUsummary">21.1544 ms</span><br /><br />
+                            Average time spent on single draw: 224.583 ms<br /><br />
+                            Duration of the program: 60.2118 s
+                        </div>
+                        <a name="comparison-and-discussion-about-results"></a>
+                        <h3>COMPARISON AND DISCUSSION ABOUT RESULTS</h3>
+                        <p>Let's compare the results related to the objects update, limited to position and velocity vectors sum, and if the particles leaved screen bounds – correction of computed positions. So CPU and GPU have got analogous tasks. The results was marked accordingly: green color for CPU and red color for GPU.</p>
+                        <p>There's no denying that CPU is a better choice for a small group of the particles. Only when that group was grew to 10,000, GPU have overtaken CPU. But from now GPU have been leading, even outclassing the rival for 500,000 particles with amazing average 0.3 ms (CPU was needed 12.5 ms for update the particles).</p>
+                        <p>The time has come to answer the question about a point of implementing CUDA in a finished application. So it is not a good idea. Looking at the time needed to update with receiving and sending data to the particles (the time was marked by aqua color), the fall of efficiency is considerable. To get better efficiency than CPU, using GPU should be in mind at an early stage of application designing.</p>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <footer>
+            Copyright © 2013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marcin Rainka
+        </footer>
+        <div id="backToTop">
+            <a href="#">
+                <img src="../images/back-to-top-btn.png" />
+            </a>
+        </div>
+    </body>
+</html>

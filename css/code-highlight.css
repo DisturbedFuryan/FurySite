@@ -1,0 +1,26 @@
+article.blue div.code {
+    color: #c2dbe7;
+}
+
+article.violet div.code {
+    color: #e1d5ef;
+}
+
+div.code {
+    font-family: Consolas;
+    font-size: 15px;
+    padding: 5px 10px 5px 10px;
+    margin: 0 0 15px 0;
+    background: #131313;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+.comment {
+    color: grey;
+}
+
+.textCode {
+    font-family: Consolas;
+}

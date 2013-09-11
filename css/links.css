@@ -1,0 +1,32 @@
+article a:link, a:visited  {
+    text-decoration: none;
+    font-style: italic;
+}
+
+article a.address:link, article a.address:visited {
+    text-decoration: underline;
+}
+
+article.blue a:link, article.blue a:visited {
+    color: #ba94e4;
+}
+
+article.blue a.address:link, article.blue a.address:visited {
+    color: #b389e0;
+}
+
+article.blue a:hover, article.blue a.address:hover {
+    color: #9874bd;
+}
+
+article.violet a:link, article.violet a:visited {
+    color: #3fb6f1;
+}
+
+article.violet a.address:link, article.violet a.address:visited {
+    color: #3ba9de;
+}
+
+article.violet a:hover, article.violet a.address:hover {
+    color: #338fbb;
+}

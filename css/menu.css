@@ -1,0 +1,55 @@
+div#menuBg {
+    position: absolute;
+    top: 180px;
+    height: 60px;
+    width: 100%;
+    min-width: 840px;
+    background: url("../images/menu-background.png") repeat-x;
+}
+
+nav#menu {
+    width: 840px;
+    height: 35px;
+    background: url("../images/menu-center.png");
+    text-align: center;
+    overflow: hidden;
+}
+
+nav#menu ul {
+    position: relative;
+    z-index: 1;
+    list-style-type: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+nav#menu ul li {
+    display: block;
+    height: 33px;
+    margin: 1px 35px 0 35px;
+    float: left;
+}
+
+nav#menu ul a:link, nav#menu ul a:visited {
+    display: block;
+    height: 25px;
+    padding-top: 8px;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1fecf4;
+    text-decoration: none;
+    text-shadow: 0 0 0.2em #505050;
+}
+
+nav#menu ul a:hover {
+    background: -moz-linear-gradient(left, rgba(31,236,244,0) 0%, rgba(31,236,244,0.4) 50%, rgba(31,236,244,0) 100%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(31,236,244,0)), 
+                                 color-stop(50%, rgba(31,236,244,0.4)), color-stop(100%, rgba(31,236,244,0)));
+    background: -webkit-linear-gradient(left, rgba(31,236,244,0) 0%, rgba(31,236,244,0.4) 50%, rgba(31,236,244,0) 100%);
+    background: -o-linear-gradient(left, rgba(31,236,244,0) 0%, rgba(31,236,244,0.4) 50%, rgba(31,236,244,0) 100%);
+    background: -ms-linear-gradient(left, rgba(31,236,244,0) 0%, rgba(31,236,244,0.4) 50%, rgba(31,236,244,0) 100%);
+    background: linear-gradient(to right, rgba(31,236,244,0) 0%, rgba(31,236,244,0.4) 50%, rgba(31,236,244,0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#001fecf4', endColorstr='#001fecf4', GradientType=1);
+}

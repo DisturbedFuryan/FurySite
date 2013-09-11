@@ -1,0 +1,48 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+    font-size: 15px;
+    color: #91c4df;
+    background: url("../images/wide-background.png") repeat-y center, #131313;
+}
+
+div#container {
+    width: 840px;
+    min-height: 100%;
+    margin: 0 auto;
+    background: url("../images/content-bottom.png") no-repeat bottom,
+                url("../images/content-background.png") repeat-y;
+}
+
+header#top {
+    width: 840px;
+    height: 180px;
+    background: url("../images/top.png");
+}
+
+div#contUtil {
+    width: 714px;
+    min-height: 454px;
+    padding: 68px 63px 94px 63px;
+    background: url("../images/content-top.png") no-repeat;
+}
+
+div#content {
+    width: 714px;
+    overflow: hidden;
+}
+
+footer {
+    min-width: 840px;
+    line-height: 29px;
+    text-align: center;
+    color: #8f8f8f;
+    background: #131313;
+    overflow: hidden;
+}
+
+.clear {
+    clear: both;
+}

@@ -1,0 +1,154 @@
+form {
+    margin: 0 0 15px 0;
+    padding: 0;
+}
+
+div.fieldSet {
+    margin: 0;
+    padding: 10px 10px 20px 10px;
+    border: solid 1px;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+}
+
+article.blue div.fieldSet {
+    border-color: #2a6e8c;
+}
+
+article.violet div.fieldSet {
+    border-color: #604f81;
+}
+
+div.formField {
+    clear: both;
+    margin: 0 0 13px 0;
+    padding: 10px;
+}
+
+div.fieldSet label {
+    width: 25%;
+    float: left;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+}
+
+div.formField input {
+    width: 65%;
+    height: 16px;
+    float: right;
+    text-align: left;
+    margin: 0;    
+    padding: 1px 6px;
+    border: 0;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    outline: none;
+    font-family: Arial;
+    font-size: 13px;
+}
+
+article.blue div.formField input {
+    background: #a8ccdd;
+}
+
+article.violet div.formField input {
+    background: #cdc2e4;
+}
+
+div.formField textarea {
+    float: right;
+    text-align: left;
+    width: 65%;
+    min-height: 100px;
+    margin: 0 0 5px 0;
+    padding: 3px 6px;
+    resize: none;
+    outline: none;
+    border: 0;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    font-family: Arial;
+    font-size: 13px;
+}
+
+article.blue div.formField  textarea {
+    background: #a8ccdd;
+}
+
+article.violet div.formField textarea {
+    background: #cdc2e4;
+}
+
+textarea.animated {
+    -webkit-transition: height 0.2s;
+    -moz-transition: height 0.2s;
+    transition: height 0.2s;
+}
+
+div.formField a.button {
+    float: right;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	display: inline-block;
+	font-family: Arial;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 3px 20px;
+	text-decoration: none;
+    margin: 0 0 0 15px;
+    font-style: normal;
+}
+
+div.formField a.button:active {
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+}
+
+article.blue div.formField a.button {
+	-moz-box-shadow: inset 0px 1px 0px 0px #bee2f9;
+	-webkit-box-shadow: inset 0px 1px 0px 0px #bee2f9;
+	box-shadow: inset 0px 1px 0px 0px #bee2f9;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+	background: -moz-linear-gradient(center top, #63b8ee 5%, #468ccf 100%);
+    background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf');
+	background-color: #63b8ee;
+	border: 1px solid #3866a3;
+	color: #14396a;
+	text-shadow: 1px 1px 0px #7cacde;
+}
+
+article.blue div.formField a.button:hover {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
+	background: -moz-linear-gradient(center top, #468ccf 5%, #63b8ee 100%);
+    background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee');
+	background-color: #468ccf;
+}
+
+article.violet div.formField a.button {
+	-moz-box-shadow: inset 0px 1px 0px 0px #efdcfb;
+	-webkit-box-shadow: inset 0px 1px 0px 0px #efdcfb;
+	box-shadow: inset 0px 1px 0px 0px #efdcfb;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dfbdfa), color-stop(1, #bc80ea));
+	background: -moz-linear-gradient(center top, #dfbdfa 5%, #bc80ea 100%);
+    background: linear-gradient(to bottom, #dfbdfa 5%, #bc80ea 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfbdfa', endColorstr='#bc80ea');
+	background-color: #dfbdfa;
+	border: 1px solid #c584f3;
+	color: #5d427b;
+	text-shadow: 1px 1px 0px #c2a7e0;
+}
+
+article.violet div.formField a.button:hover {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #bc80ea), color-stop(1, #dfbdfa));
+	background: -moz-linear-gradient(center top, #bc80ea 5%, #dfbdfa 100%);
+    background: linear-gradient(to bottom, #bc80ea 5%, #dfbdfa 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bc80ea', endColorstr='#dfbdfa');
+	background-color: #bc80ea;
+}

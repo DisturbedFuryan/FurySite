@@ -1,0 +1,61 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Furyan's Homepage</title>
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" href="../css/style.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/menu.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/content.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/links.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/code-highlight.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/article-graphics.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/portfolio-apps/movement-formation.css" type="text/css" media="all" />
+    </head>
+    <body>
+        <div id="menuBg"></div>
+        <div id="container">
+            <header id="top"></header>
+            <nav id="menu">
+                <ul>
+                    <li><a href="../index.html">HOME</a></li>
+                    <li><a href="../portfolio.html">PORTFOLIO</a></li>
+                    <li><a href="../about-me.html">ABOUT ME</a></li>
+                    <li><a href="../contact.html">CONTACT</a></li>
+                </ul>
+            </nav>
+            <div id="contUtil">
+                <div id="content">
+                    <article class="blue">
+                        <h2>Movement Formation</h2>
+                        <p>
+                            Download: <a href="packages/MovementFormation.zip">MovementFormation.zip</a> (for Windows only)<br />
+                            Source code: <a class="address" href="">https://github.com/DisturbedFuryan/MovementFormation</a>
+                        </p>
+                        <hr />
+                        <ul>
+                            <li><a href="#introduction">Introduction</a></li>
+                            <li><a href="#army-algorithm">Army's algorithm</a></li>
+                        </ul>
+                        <hr />
+                        <a name="introduction"></a>
+                        <p>I wanted to create a game, where player becomes one of hundreds knights attending a battle. Unfortunately plan was changed at halfway. What a pity, especially as I succeeded in creating steering similar to <i>Diablo II</i>. Doesn't matter... So the application presents as follows: the armies have leaders, avoid each other and they can pass by obstructions. One of them is controlling by user, playing the role of army commander. The system was enriched about detecting of collisions, what prevents the laying on the objects. Army’s algorithm is a stateless algorithm, the knights are testing the environment in every update cycle, and between cycles the additional information aren’t storing.</p>
+                        <a name="army-algorithm"></a>
+                        <h3>ARMY'S ALGORITHM</h3>
+                        <p>Army's algorithm is a modified version of flocking. He uses four classical rules: <i>separation</i>, <i>alignment</i>, <i>cohesion</i> and <i>avoidance</i>. In addition, he uses two new rules, modified rules of <i>alignment</i> and <i>cohesion</i>. This modification is dedicated to army's leaders.</p>
+                        <p>Agents being inside the army are divide into servants and leaders. Class <span class="textCode">IBoid</span> inheriting from class <span class="textCode">IKnight</span> contains all four rules of classical flocking whereas class <span class="textCode">CSerf</span> also contains the additional modified rules. Class <span class="textCode">CLeader</span> uses only classical four rules except one – <i>the alignment rule</i>. Leaders don't use that rule, because only servants should adjust march direction to their commanders.</p>
+                        <div class="article-graphic">
+                            <img class="diagram" src="../images/portfolio-apps/movement-formation/knights-diagram-without-user.gif" />
+                            <p class="description">Class diagram representing division of agents into servants and leaders</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <footer>
+            Copyright © 2013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marcin Rainka
+        </footer>
+    </body>
+</html>

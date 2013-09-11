@@ -1,0 +1,46 @@
+table#testPlatform {
+    margin-left: 5%;
+    width: 90%;
+}
+
+table#testPlatform tr td.device {
+    padding-right: 5%;
+    width: 40%;
+    text-align: right;
+}
+
+div.summary {
+    font-family: Consolas;
+    font-size: 15px;
+    padding: 5px 10px 5px 10px;
+    margin: 0 0 15px 0;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+div.cpuSummary {
+    color: #d2f6cd;
+    background: #031601;
+}
+
+div.gpuSummary {
+    color: #f4c2c2;
+    background: #250101;
+}
+
+.particlesNum {
+    color: yellow;
+}
+
+.cpuTime {
+    color: lime;
+}
+
+.gpuTime {
+    color: red;
+}
+
+.cpuTimeGPUsummary {
+    color: aqua;
+}

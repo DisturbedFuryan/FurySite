@@ -1,0 +1,33 @@
+div.article-graphic {
+    margin: 25px 0 25px 0;
+    text-align: center;
+}
+
+div.article-graphic img {
+    margin: 0 0 15px 0;
+    padding: 0;
+    border: 0;
+    -moz-box-shadow: 0 0 25px 0px black;
+    -webkit-box-shadow: 0 0 25px 0px black;
+    box-shadow: 0 0 25px 0px black;
+}
+
+div.article-graphic img.diagram {
+    padding: 10px;
+}
+
+article.blue div.article-graphic img.diagram {
+    background: #d8eef9;
+}
+
+article.violet div.article-graphic img.diagram {
+    background: #f4e9ff;
+}
+
+div.article-graphic p.description {
+    width: 80%;
+    margin: 0 0 0 10%;
+    padding: 0;
+    text-align: center;
+    font-style: italic;
+}
