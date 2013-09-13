@@ -10,7 +10,7 @@ table#testPlatform tr td.device {
 }
 
 div.summary {
-    font-family: Consolas;
+    font-family: "Inconsolata";
     font-size: 15px;
     padding: 5px 10px 5px 10px;
     margin: 0 0 15px 0;

@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Inconsolata";
+    src: url(../fonts/Inconsolata.otf) format("opentype");
+}
+
 article.blue div.code {
     color: #c2dbe7;
 }
@@ -7,7 +12,7 @@ article.violet div.code {
 }
 
 div.code {
-    font-family: Consolas;
+    font-family: "Inconsolata";
     font-size: 15px;
     padding: 5px 10px 5px 10px;
     margin: 0 0 15px 0;
@@ -22,5 +27,5 @@ div.code {
 }
 
 .textCode {
-    font-family: Consolas;
+    font-family: "Inconsolata";
 }
