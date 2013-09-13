@@ -1,19 +1,26 @@
-function SetBtnPos() {
-    /* Settings. */
-    var minPxTop = 400;
-    var minPxBottom = 400;
-    var preferredBottom = 85;
-    var btnHDist = 795;
+function setBtnPosition() {
+    /* Minimum pixel distance from top and bottom. */
+    var minTop = 400;
+    var minBottom = 400;
     
-    var newLeft, newBottom;
-    newLeft = ($('#container').offset().left + btnHDist - $(window).scrollLeft());
-    newBottom = preferredBottom;
-    if (($(window).scrollTop() + $(window).height() - newBottom) < minPxTop) {
-        newBottom = ($(window).height() - (minPxTop - $(window).scrollTop()));
+    /* Preferred button position. */
+    var left = 805;
+    var bottom = 85;
+    
+    var newLeft = ($('#container').offset().left + left - $(window).scrollLeft());
+    var newBottom = bottom;
+    
+    var winScrollTop = $(window).scrollTop();
+    var winHeight = $(window).height();
+    var docHeight = $(document).height();
+    
+    if ((winScrollTop + winHeight - newBottom) < minTop) {
+        newBottom = (winHeight - minTop + winScrollTop);
     }
-    else if (($(window).scrollTop() + $(window).height() - newBottom) > ($(document).height() - minPxBottom)) {
-        newBottom = (minPxBottom - ($(document).height() - ($(window).scrollTop() + $(window).height())));
+    else if ((winScrollTop + winHeight - newBottom) > (docHeight - minBottom)) {
+        newBottom = (minBottom - docHeight + winScrollTop + winHeight);
     }
+    
     $('#backToTop').css({ left: newLeft, bottom: newBottom });
 }
 
@@ -25,11 +32,12 @@ $(document).ready(function() {
     var scrollSpeed = 1000;
     
     $(window).resize(function() {
-        SetBtnPos();
+        setBtnPosition();
     });
     
     $(window).scroll(function() {
-        SetBtnPos();
+        setBtnPosition();
+        
         if ($(window).scrollTop() >= pxShowDist) {
             $('#backToTop').fadeIn(fadeInTime);
         }
@@ -38,8 +46,9 @@ $(document).ready(function() {
         }
     });
     
-    $('#backToTop a').click(function() {
+    $('#backToTop').click(function() {
         $('html, body').animate({ scrollTop: 0 }, scrollSpeed);
+        
         return false;
     });
 });
