@@ -12,21 +12,21 @@ div#container {
     width: 840px;
     min-height: 100%;
     margin: 0 auto;
-    background: url("../images/content-bottom.png") no-repeat bottom,
-                url("../images/content-background.png") repeat-y;
+    background: url("../images/content-bottom.png") no-repeat left bottom,
+                url("../images/content-background.png") repeat-y left;
 }
 
 header#top {
     width: 840px;
     height: 180px;
-    background: url("../images/top.png");
+    background: url("../images/top.png") repeat-y left;
 }
 
 div#contUtil {
     width: 714px;
     min-height: 454px;
     padding: 68px 63px 94px 63px;
-    background: url("../images/content-top.png") no-repeat;
+    background: url("../images/content-top.png") no-repeat left top;
 }
 
 div#content {

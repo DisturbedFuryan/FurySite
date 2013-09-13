@@ -10,7 +10,7 @@ div#menuBg {
 nav#menu {
     width: 840px;
     height: 35px;
-    background: url("../images/menu-center.png");
+    background: url("../images/menu-center.png") repeat-y left;
     text-align: center;
     overflow: hidden;
 }
