@@ -53,6 +53,19 @@
                             <img class="diagram" src="../images/portfolio-apps/movement-formation/knights-diagram-without-user.gif" />
                             <p class="description">Class diagram representing division of agents into servants and leaders</p>
                         </div>
+                        <p>Modification of <i>the alignment rule</i> is forcing a servant to fit its walking direction to a closest another servant and a closest commander. This is illustrated below, black triangle is commander, and blue – an another servant.</p>
+                        <div class="article-graphic">
+                            <img src="../images/portfolio-apps/movement-formation/boids-in-army-algorithm_alignment.png" />
+                            <p class="description">The modified alignment rule in army's algorithm</p>
+                        </div>
+                        <p>Whereas the modified cohesion rule, on the picture below, is trying to directing servant to the closest commander, instead of army's average location. The more the servant is away, the greater the priority of distance reduction.</p>
+                        <div class="article-graphic">
+                            <img src="../images/portfolio-apps/movement-formation/boids-in-army-algorithm_cohesion.png" />
+                            <p class="description">The modified cohesion rule in army's algorithm</p>
+                        </div>
+                        <p>In case when all commanders are not in sight, the servant is using the unmodified rules of classical flocking.</p>
+                        <p>In addition, knights are using fourth rule – <i>avoidance</i> – to driving alongside the obstacles and enemies. They're locating closest enemy and closest obstacle to react if distance is too small.</p>
+                        <p>Army's algorithm has all advantages of the classical flocking, the reduction of memory requirements and reacting for environment changes in real time.</p>
                     </article>
                 </div>
             </div>
