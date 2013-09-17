@@ -1,9 +1,9 @@
-div.article-graphic {
+div.articleGraphic {
     margin: 25px 0 25px 0;
     text-align: center;
 }
 
-div.article-graphic img {
+div.articleGraphic img {
     margin: 0 0 15px 0;
     padding: 0;
     border: 0;
@@ -12,22 +12,31 @@ div.article-graphic img {
     box-shadow: 0 0 25px 0px black;
 }
 
-div.article-graphic img.diagram {
+div.articleGraphic img.diagram {
     padding: 10px;
 }
 
-article.blue div.article-graphic img.diagram {
+article.blue div.articleGraphic img.diagram {
     background: #d8eef9;
 }
 
-article.violet div.article-graphic img.diagram {
+article.violet div.articleGraphic img.diagram {
     background: #f4e9ff;
 }
 
-div.article-graphic p.description {
-    width: 80%;
-    margin: 0 0 0 10%;
+div.articleGraphic p.description {
+    margin: 0;
     padding: 0;
     text-align: center;
     font-style: italic;
+}
+
+div.textWrapLeft {
+    float: left;
+    margin: 25px 25px 25px 15px;
+}
+
+div.textWrapRight {
+    float: right;
+    margin: 25px 15px 25px 25px;
 }
