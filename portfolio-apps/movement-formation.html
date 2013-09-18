@@ -51,17 +51,17 @@
                         <p>Army's algorithm is a modified version of flocking. He uses four classical rules: <i>separation</i>, <i>alignment</i>, <i>cohesion</i> and <i>avoidance</i>. In addition, he uses two new rules, modified rules of <i>alignment</i> and <i>cohesion</i>. This modification is dedicated to army's leaders.</p>
                         <p>Agents being inside the army are divide into servants and leaders. Class <span class="textCode">IBoid</span> inheriting from class <span class="textCode">IKnight</span> contains all four rules of classical flocking whereas class <span class="textCode">CSerf</span> also contains the additional modified rules. Class <span class="textCode">CLeader</span> uses only classical four rules except one – <i>the alignment rule</i>. Leaders don't use that rule, because only servants should adjust march direction to their commanders.</p>
                         <div class="articleGraphic">
-                            <img class="diagram" src="../images/portfolio-apps/movement-formation/knights-diagram-without-user.gif" />
+                            <img class="diagram shadow" src="../images/portfolio-apps/movement-formation/knights-diagram-without-user.gif" />
                             <p class="description">Class diagram representing division of agents into servants and leaders</p>
                         </div>
                         <p>Modification of <i>the alignment rule</i> is forcing a servant to fit its walking direction to a closest another servant and a closest commander. This is illustrated below, black triangle is commander, and blue – an another servant.</p>
                         <div class="articleGraphic">
-                            <img src="../images/portfolio-apps/movement-formation/boids-in-army-algorithm_alignment.png" />
+                            <img class="shadow" src="../images/portfolio-apps/movement-formation/boids-in-army-algorithm_alignment.png" />
                             <p class="description">The modified alignment rule in army's algorithm</p>
                         </div>
                         <p>Whereas the modified cohesion rule, on the picture below, is trying to directing servant to the closest commander, instead of army's average location. The more the servant is away, the greater the priority of distance reduction.</p>
                         <div class="articleGraphic">
-                            <img src="../images/portfolio-apps/movement-formation/boids-in-army-algorithm_cohesion.png" />
+                            <img class="shadow" src="../images/portfolio-apps/movement-formation/boids-in-army-algorithm_cohesion.png" />
                             <p class="description">The modified cohesion rule in army's algorithm</p>
                         </div>
                         <p>In case when all commanders are not in sight, the servant is using the unmodified rules of classical flocking.</p>
@@ -70,13 +70,29 @@
                         <a name="graphic-design"></a>
                         <h3>GRAPHIC DESIGN</h3>
                         <div class="articleGraphic textWrapRight">
-                            <img src="../images/portfolio-apps/movement-formation/knight-sketch.png" />
+                            <img class="knightPrototype shadow" src="../images/portfolio-apps/movement-formation/knight-sketch.png" />
                             <p class="description">Knight prototype on paper</p>
                         </div>
                         <p>Objects were designed in such a way to be like circles. That kind of design simplifies identification of collisions between them. It allows to use <a href="http://lazyfoo.net/SDL_tutorials/lesson19/">circle to circle collision detection</a>.</p>
-                        <p>In the simulation are two types of objects – knights and obstacles. Knights look the same, only highlight allows to recognize the knight type. Commander from servant differs the shape of highlight, while one army from another army differs color of that highlight.</p>
+                        <div class="articleGraphic textWrapLeft">
+                            <img class="stone" src="../images/portfolio-apps/movement-formation/stone.png" />
+                            <img class="palisade" src="../images/portfolio-apps/movement-formation/palisade.png" />
+                            <p class="description">Obstacles</p>
+                        </div>
+                        <p>In the simulation are two types of objects – knights and obstacles (stones and palisades). Knights look the same, only highlight allows to recognize the knight type. Commander from servant differs the shape of highlight, while one army from another army differs color of that highlight.</p>
                         <p>Knight has three parts – legs, hand with weapon, and trunk. In graphic files these parts are not overlapped. Thanks to this division, it's not possible to see situation when one of the knights is walking on head of another one. First, legs of all knights are drawn. Second, weapons and trunks at the end.</p>
                         <p>Grass is a set of identical-looking tiles. The tile was created by using filter in <i>GIMP</i> (<span class="textCode">Filters → Map → Make Seamless</span>). Thanks to this, grass looks like one extensive surface.</p>
+                        <p>OK, I know that graphic doesn't look too good, and this bird's eye view without any perspective... Appearance was less important during creating this project so... It's just looks like looks.</p>
+                        <div class="articleGraphic">
+                            <img class="knightParts shadow" src="../images/portfolio-apps/movement-formation/knight-shoes_walk.gif" />
+                            <span class="arithmeticSign">+</span>
+                            <img class="knightParts shadow" src="../images/portfolio-apps/movement-formation/knight-sword_walk.gif" />
+                            <span class="arithmeticSign">+</span>
+                            <img class="knightParts shadow" src="../images/portfolio-apps/movement-formation/knight-body_walk.gif" />
+                            <span class="arithmeticSign">=</span>
+                            <img class="knightParts shadow" src="../images/portfolio-apps/movement-formation/walking-knight.gif" />
+                            <p class="description">Division of the knight</p>
+                        </div>
                         <div class="clear"></div>
                     </article>
                 </div>
