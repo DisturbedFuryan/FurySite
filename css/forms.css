@@ -48,6 +48,7 @@ div.formField input {
     outline: none;
     font-family: Arial;
     font-size: 13px;
+    color: black;
 }
 
 article.blue div.formField input {
@@ -73,6 +74,7 @@ div.formField textarea {
     -webkit-border-radius: 3px;
     font-family: Arial;
     font-size: 13px;
+    color: black;
 }
 
 article.blue div.formField  textarea {

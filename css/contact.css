@@ -36,3 +36,8 @@ div.contactField div.status img {
     border: 0;
     float: left;
 }
+
+img#gg {
+    width: 18px;
+    height: 18px;
+}
