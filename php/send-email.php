@@ -1,9 +1,11 @@
 <?php
+    echo '<html><body bgcolor="#131313"></body></html>';
+    
     /* Reading input data. */
-    $userName = "$userName";
-    $email = "$email";
-    $subject = "$subject";
-    $message = "$message";
+    $userName = $_POST['userName'];
+    $email = $_POST['email'];
+    $subject = $_POST['subject'];
+    $message = $_POST['message'];
     
     $header = "From: $userName <$email>";
     
@@ -13,9 +15,17 @@
     
     /* Sending email. */
     if ($sendEmail) {
-        print "Your message has been sent successfully.";
+        echo '<script type="text/javascript">
+                  alert("Your message has been sent successfully.");
+              </script>';
     }
     else {
-        print "An error occurred while sending a message.";
+        echo '<script type="text/javascript">
+                  alert("An error occurred while sending a message.");
+              </script>';
     }
+    
+    echo '<script type="text/javascript">
+              window.location = "../contact.html";
+          </script>';
 ?>
