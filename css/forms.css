@@ -7,9 +7,9 @@ div.fieldSet {
     margin: 0;
     padding: 10px 10px 20px 10px;
     border: solid 1px;
-    border-radius: 15px;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
 }
 
 article.blue div.fieldSet {
