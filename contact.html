@@ -55,7 +55,7 @@
                     <div id="right">
                         <article class="blue">
                             <h2>Quick message</h2>
-                            <form action="#">
+                            <form id="contactForm" action="php/send-email.php">
                                 <div class="fieldSet">
                                     <div class="formField">
                                         <label for="userName">Name:</label>
@@ -74,7 +74,7 @@
                                         <textarea id="message" name="message" class="animated"></textarea>
                                     </div>
                                     <div class="formField">
-                                        <a href="#" class="button">Send</a>
+                                        <a href="#" class="button" onClick="document.getElementById('contactForm').submit()">Send</a>
                                     </div>
                                     <div class="clear"></div>
                                 </div>
