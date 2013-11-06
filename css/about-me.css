@@ -1,6 +1,7 @@
 img#myPhoto {
     float: left;
     width: 120px;
+    height: 160px;
     margin: 0 15px 15px 0;
     -moz-box-shadow: 0 0 15px 0px black;
     -webkit-box-shadow: 0 0 15px 0px black;
@@ -10,6 +11,7 @@ img#myPhoto {
 img#powerlifting {
     float: right;
     width: 260px;
+    height: 173px;
     margin: 0 0 15px 15px;
     -moz-box-shadow: 0 0 15px 0px black;
     -webkit-box-shadow: 0 0 15px 0px black;
