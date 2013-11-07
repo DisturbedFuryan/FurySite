@@ -40,7 +40,7 @@ nav#menu ul a:link, nav#menu ul a:visited {
     font-weight: bold;
     color: #1fecf4;
     text-decoration: none;
-    text-shadow: 0 0 0.2em #505050;
+    text-shadow: 0 0 0.4em #161616;
 }
 
 nav#menu ul a:hover {
