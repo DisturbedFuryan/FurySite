@@ -1,0 +1,236 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Furyan's Homepage</title>
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link rel="shortcut icon" href="../icon.ico" />
+        <link rel="stylesheet" href="../css/style.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/menu.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/content.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/links.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/code-highlight.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/back-to-top.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="../css/portfolio-apps/funny-permutation.css" type="text/css" media="all" />
+        <script src="../js/jquery-1.7.2.min.js"></script>
+        <script src="../js/back-to-top.js"></script>
+    </head>
+    <body>
+        <div id="menuBg"></div>
+        <div id="container">
+            <header id="top"></header>
+            <nav id="menu">
+                <ul>
+                    <li><a href="../index.html">HOME</a></li>
+                    <li><a href="../portfolio.html">PORTFOLIO</a></li>
+                    <li><a href="../about-me.html">ABOUT ME</a></li>
+                    <li><a href="../contact.html">CONTACT</a></li>
+                </ul>
+            </nav>
+            <div id="contUtil">
+                <div id="content">
+                    <article class="blue">
+                        <h2>Funny Permutation</h2>
+                        <p>
+                            Source code: <a class="address" href="https://github.com/DisturbedFuryan/FunnyPermutation">https://github.com/DisturbedFuryan/FunnyPermutation</a>
+                        </p>
+                        <hr />
+                        <ul>
+                            <li><a href="#introduction">Introduction</a></li>
+                            <li><a href="#used-algorithms">Used algorithms</a></li>
+                            <li><a href="#summation">Summation</a></li>
+                        </ul>
+                        <hr />
+                        <a name="introduction"></a>
+                        <p>On the combinatorial algorithm course we've discussed about algorithms to find all permutations. And I've decided to code an application to collect all of them. <i>Funny Permutation</i> has a funny name, but doesn't even have any graphical user interface. To compile <a href="https://github.com/DisturbedFuryan/FunnyPermutation">the code</a>, just type <span class="textCode">make</span> under Linux.</p>
+                        <a name="used-algorithms"></a>
+                        <h3>USED ALGORITHMS</h3>
+                        <p>Following algorithms were given on the course:</p>
+                        <p>&bull; algorithm A</p>
+                        <div class="code">
+                            {<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;for i = 1 to n do P[i] = i;<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;antylex(n);<br />
+                            }<br />
+                            <br />
+                            antylex(m) {<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;if m == 1 then print P[1] ... P[m];<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;else for i = 1 to m do {<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;antylex(m - 1);<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i < m then {<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P[i] <-> P[m];<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reverse(m - 1);<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                            }<br />
+                        </div>
+                        <p>&bull; algorithm B</p>
+                        <div class="code">
+                            {<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;for i = 1 to n do P[i] = i;<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;perm(n);<br />
+                            }<br />
+                            <br />
+                            perm(m) {<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;if m == 1 then print P[1] ... P[m];<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;else for i = 1 to m do {<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;perm(m - 1);<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i < m then P[b(m, i)] <-> P[m];<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                            }<br />
+                            <br />
+                            b(m, i) {<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;if (m mod 2 == 0) and (m > 2) then {<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i < (m - 1) then b <- i;<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else b <- (m - 2);<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;else b <- (m - 1);<br />
+                            }<br />
+                        </div>
+                        <p>&bull; algorithm C (<a href="http://en.wikipedia.org/wiki/Steinhaus%E2%80%93Johnson%E2%80%93Trotter_algorithm">Steinhaus-Johnson-Trotter</a>)</p>
+                        <div class="code">
+                            n = 3<br />
+                            <br />
+                            <1 <2 <3<br />
+                            <1 <3 <2<br />
+                            <3 <1 <2<br />
+                            3> <2 <1<br />
+                            <2 3> <1<br />
+                            <2 <1 3><br />
+                            <br />
+                            n = 4<br />
+                            <br />
+                            1 2 3 4<br />
+                            1 2 4 3<br />
+                            1 4 2 3<br />
+                            4 1 2 3<br />
+                            4 1 3 2<br />
+                            1 4 3 2<br />
+                            1 3 4 2<br />
+                            1 3 2 4<br />
+                            3 1 2 4<br />
+                            ...<br />
+                        </div>
+                        <p><b>Algorithm A</b>, called <i>ReverseUse</i> in my application, was implemented without swapping (<span class="textCode">P[i] <-> P[m]</span>). But it still working like a charm.</p>
+                        <p><b>Algorithm B</b>, called <i>Bmu</i> in <i>Funny Permutation</i>, was implemented in two ways – recursive and non-recursive. The recursive version has been shown on the course, and was coded in unchanged form. But  the non-recursive version it's my own.</p>
+                        <p>I've been watching what values, and in what order, were going to the <span class="textCode">b()</span> function during the recursive algorithm. And I've decided to use an additional array to kept the amount of use the <span class="textCode">m</span>. On the startup the array is filled by zeros of course. When we're going to use the specific <span class="textCode">m</span>, we simply increment the counter. Every time we're looking for <i>the first free <span class="textCode">m</span></i>.  When we find it, we go back to the beginning of the array. <i>The free <span class="textCode">m</span></i> is when the amount of use is smaller than the value of this <span class="textCode">m</span>.  All elements visited before <i>the first free <span class="textCode">m</span></i> are reset. Algorithm stops when all elements of the array are zeros again.</p>
+                        <p>Let's see the example below.</p>
+                        <p>Parameters for <span class="textCode">b()</span> for <span class="textCode">n = 4</span>:</p>
+                        <table id="bParameters">
+                            <tr>
+                                <th>permutation</th><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td>
+                            </tr>
+                            <tr class="iRow">
+                                <th>i</th><td>1</td><td>1</td><td>1</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>1</td><td>1</td><td>1</td><td>2</td><td>1</td><td>3</td><td>1</td><td>1</td><td>1</td><td>2</td><td>1</td>
+                            </tr>
+                            <tr class="mRow">
+                                <th>m</th><td>2</td><td>3</td><td>2</td><td>3</td><td>2</td><td>4</td><td>2</td><td>3</td><td>2</td><td>3</td><td>2</td><td>4</td><td>2</td><td>3</td><td>2</td><td>3</td><td>2</td><td>4</td><td>2</td><td>3</td><td>2</td><td>3</td><td>2</td>
+                            </tr>
+                        </table>
+                        <p>
+                            The second permutation is created by <span class="textCode">i = 1</span> and <span class="textCode">m = 2</span>.<br />
+                            The third permutation is created by <span class="textCode">i = 1</span> and <span class="textCode">m = 3</span>.<br />
+                            (...)<br />
+                            The nineteenth permutation is created by <span class="textCode">i = 3</span> and <span class="textCode">m = 4</span>.<br />
+                            (...)<br />
+                            The twenty-fourth permutation is created by <span class="textCode">i = 1</span> and <span class="textCode">m = 2</span>.
+                        </p>
+                        <p>Changes in the additional array <span class="textCode">M</span>:</p>
+                        <table id="mUseCountArray" class="textCode">
+                            <tr>
+                                <td></td><td></td><th>1</th><th>2</th><th>3</th><th>4</th><td></td>
+                            </tr>
+                            <tr>
+                                <td><b>M</b></td><td><b>[</b></td><td>-</td><td>0</td><td>0</td><td>0</td><td><b>]</b></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>0</td><td>0</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching freeM">1</td><td>0</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>1</td><td>0</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching freeM">2</td><td>0</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>2</td><td>0</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching">0</td><td class="searching freeM">1</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>0</td><td>1</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching freeM">1</td><td>1</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>1</td><td>1</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching freeM">2</td><td>1</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>2</td><td>1</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching">0</td><td class="searching freeM">2</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>0</td><td>2</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching freeM">1</td><td>2</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>1</td><td>2</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching freeM">2</td><td>2</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>2</td><td>2</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching">0</td><td class="searching freeM">3</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>0</td><td>3</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching freeM">1</td><td>3</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>1</td><td>3</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching freeM">2</td><td>3</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching freeM">1</td><td>2</td><td>3</td><td></td>
+                            </tr>
+                            <tr>
+                                <td></td><td></td><td></td><td class="searching">0</td><td class="searching">0</td><td class="searching">0</td><td></td>
+                            </tr>
+                        </table>
+                        <p>Digits with a bold lime color are <i>the first free <span class="textCode">m</span></i>. And a lime underline shows that the searching for <i>the first free <span class="textCode">m</span></i> is still active.</p>
+                        <p>More informations about the non-recursive version of <b>algorithm B</b> you can get by looking at <a href="https://github.com/DisturbedFuryan/FunnyPermutation/blob/master/Bmu.cpp#L81">the code</a>.</p>
+                        <p><b>Algorithm C</b> was only implemented and you can see the code <a href="https://github.com/DisturbedFuryan/FunnyPermutation/blob/master/SteinhausJohnsonTrotter.cpp#L21">here</a>.</p>
+                        <a name="summation"></a>
+                        <h3>SUMMATION</h3>
+                        <p>We can confront a recursive with the non-recursive version. So let's do it. And what's the result? Non-recursive version is much faster. For instance, recursive algorithm B found all permutations for <span class="textCode">n = 10</span> in 5.7 seconds on the academic machine, when the non-recursive version needed 2.7 seconds only.</p>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <footer>
+            Copyright © 2013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marcin Rainka
+        </footer>
+        <a id="backToTop" href="#"></a>
+    </body>
+</html>

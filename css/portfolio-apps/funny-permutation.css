@@ -1,0 +1,53 @@
+table#bParameters {
+    margin-left: 9px;
+    border-collapse: collapse;
+    border-style: hidden;
+}
+
+table#bParameters td, table#bParameters th {
+    border: 1px solid #91c4df;
+}
+
+table#bParameters td {
+    width: 24px;
+    text-align: center;
+}
+
+table#bParameters th {
+    width: 93px;
+    text-align: right;
+    padding-right: 7px;
+}
+
+table#bParameters tr.iRow {
+    color: lime;
+}
+
+table#bParameters tr.mRow {
+    color: yellow;
+}
+
+table#mUseCountArray {
+    border-collapse: collapse;
+}
+
+table#mUseCountArray td, table#mUseCountArray th {
+    width: 20px;
+    text-align: center;
+    border-bottom: 1px solid transparent;
+}
+
+table#mUseCountArray th {
+    font-weight: normal;
+    font-size: 10px;
+    font-family: Arial;
+}
+
+table#mUseCountArray td.searching {
+    border-bottom: 1px solid lime;
+}
+
+table#mUseCountArray td.freeM {
+    font-weight: bold;
+    color: lime;
+}
